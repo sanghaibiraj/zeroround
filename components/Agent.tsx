@@ -92,10 +92,10 @@ export const Agent = ({ userName, userId, type, interviewId, questions }: AgentP
     // Handler: Generates feedback after the call ends
     const handleGenerateFeedback = async (messages: SavedMessage[]) => {
         console.log('Generate feedback here.');
-        const { success, feedbackId: id } =await createFeedback({
-            interviewId:interviewId!,
-            userId:userId!,
-            transcript:messages
+        const { success, feedbackId: id } = await createFeedback({
+            interviewId: interviewId!,
+            userId: userId!,
+            transcript: messages
         })
         // TODO: Replace this mock logic with real API call to generate feedback
 

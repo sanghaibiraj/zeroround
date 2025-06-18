@@ -1,170 +1,216 @@
 "use client"
 
-import React, { createContext, useContext, useState, ReactNode } from "react"
-import { InterviewFormData, FormErrors } from "@/constants/interviewData"
+import React, { createContext, useContext, useState, ReactNode, FormEvent } from "react"
+import { getCurrentUser } from "@/lib/actions/auth.action"
+import { popularTechStacks } from "@/constants/interviewData"
+
+type SubmitStatus = "idle" | "submitting" | "success" | "error"
+
+interface FormData {
+  jobRole: string;
+  type: string;
+  level: string;
+  techStacks: string[];
+  sampleQuestions: string;
+}
+
+interface FormErrors {
+  jobRole?: string;
+  type?: string;
+  level?: string;
+  sampleQuestions?: string;
+}
 
 interface InterviewFormContextType {
-    formData: InterviewFormData;
-    errors: FormErrors;
-    isGeneratingQuestions: boolean;
-    isSubmitting: boolean;
-    submitStatus: "idle" | "success" | "error";
-    customTechStack: string;
-    setCustomTechStack: (value: string) => void;
-    handleInputChange: (field: string, value: string) => void;
-    addTechStack: (tech: string) => void;
-    removeTechStack: (tech: string) => void;
-    addCustomTechStack: () => void;
-    generateQuestionsWithAI: () => Promise<void>;
-    validateForm: () => boolean;
-    handleSubmit: (e: React.FormEvent) => Promise<void>;
-    setErrors: React.Dispatch<React.SetStateAction<FormErrors>>;
+  formData: FormData;
+  errors: FormErrors;
+  isGeneratingQuestions: boolean;
+  isSubmitting: boolean;
+  submitStatus: SubmitStatus;
+  customTechStack: string;
+  setCustomTechStack: (value: string) => void;
+  handleInputChange: (name: string, value: string) => void;
+  addTechStack: (tech: string) => void;
+  removeTechStack: (tech: string) => void;
+  addCustomTechStack: () => void;
+  generateQuestionsWithAI: () => Promise<void>;
+  validateForm: () => boolean;
+  handleSubmit: (e: FormEvent) => Promise<void>;
+  setErrors: (errors: FormErrors) => void;
 }
 
 const InterviewFormContext = createContext<InterviewFormContextType | undefined>(undefined)
 
-export const InterviewFormProvider = ({ children }: { children: ReactNode }) => {
-    const [formData, setFormData] = useState<InterviewFormData>({
-        jobRole: "",
-        type: "",
-        level: "",
-        techStacks: [],
-        sampleQuestions: "",
-    })
+export function InterviewFormProvider({ children }: { children: ReactNode }) {
+  const [formData, setFormData] = useState<FormData>({
+    jobRole: "",
+    type: "",
+    level: "",
+    techStacks: [],
+    sampleQuestions: "",
+  })
 
-    const [customTechStack, setCustomTechStack] = useState("")
-    const [isGeneratingQuestions, setIsGeneratingQuestions] = useState(false)
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
-    const [errors, setErrors] = useState<FormErrors>({})
+  const [errors, setErrors] = useState<FormErrors>({})
+  const [isGeneratingQuestions, setIsGeneratingQuestions] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<SubmitStatus>("idle")
+  const [customTechStack, setCustomTechStack] = useState("")
 
-    const handleInputChange = (field: string, value: string) => {
-        setFormData((prev) => ({ ...prev, [field]: value }))
-        if (errors[field]) {
-            setErrors((prev) => ({ ...prev, [field]: "" }))
-        }
+  const handleInputChange = (name: string, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    // Clear error when field is edited
+    if (errors[name as keyof FormErrors]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }))
+    }
+  }
+
+  const addTechStack = (tech: string) => {
+    if (!formData.techStacks.includes(tech)) {
+      setFormData((prev) => ({
+        ...prev,
+        techStacks: [...prev.techStacks, tech],
+      }))
+    }
+  }
+
+  const removeTechStack = (tech: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      techStacks: prev.techStacks.filter((t) => t !== tech),
+    }))
+  }
+
+  const addCustomTechStack = () => {
+    if (customTechStack.trim() && !formData.techStacks.includes(customTechStack.trim())) {
+      addTechStack(customTechStack.trim())
+      setCustomTechStack("")
+    }
+  }
+
+  const generateQuestionsWithAI = async () => {
+    if (isGeneratingQuestions || !formData.jobRole || !formData.type || !formData.level) {
+      return
     }
 
-    const addTechStack = (tech: string) => {
-        if (tech && !formData.techStacks.includes(tech)) {
-            setFormData((prev) => ({
-                ...prev,
-                techStacks: [...prev.techStacks, tech],
-            }))
-        }
+    setIsGeneratingQuestions(true)
+
+    try {
+      // For simplicity, we'll generate some placeholder questions
+      // In a real app, you'd call an AI service here
+      const techStackString = formData.techStacks.join(", ")
+      
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1500))
+      
+      const generatedQuestions = 
+        `1. Tell me about your experience with ${techStackString}.\n` +
+        `2. How would you solve [problem related to ${formData.jobRole}]?\n` +
+        `3. Describe a challenging project you worked on as a ${formData.jobRole}.\n` +
+        `4. How do you stay updated with the latest technologies in this field?\n` +
+        `5. What's your approach to debugging complex issues?`
+      
+      setFormData((prev) => ({
+        ...prev,
+        sampleQuestions: generatedQuestions,
+      }))
+    } catch (error) {
+      console.error("Error generating questions:", error)
+    } finally {
+      setIsGeneratingQuestions(false)
     }
+  }
 
-    const removeTechStack = (tech: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            techStacks: prev.techStacks.filter((t) => t !== tech),
-        }))
-    }
+  const validateForm = () => {
+    const newErrors: FormErrors = {}
 
-    const addCustomTechStack = () => {
-        if (customTechStack.trim()) {
-            addTechStack(customTechStack.trim())
-            setCustomTechStack("")
-        }
-    }
+    if (!formData.jobRole.trim()) newErrors.jobRole = "Job role is required"
+    if (!formData.type) newErrors.type = "Interview type is required"
+    if (!formData.level) newErrors.level = "Difficulty level is required"
+    if (!formData.sampleQuestions.trim()) newErrors.sampleQuestions = "Sample questions are required"
 
-    const generateQuestionsWithAI = async () => {
-        if (!formData.jobRole || !formData.type || !formData.level) {
-            setErrors({
-                jobRole: !formData.jobRole ? "Job role is required" : "",
-                type: !formData.type ? "Interview type is required" : "",
-                level: !formData.level ? "Difficulty level is required" : "",
-            })
-            return
-        }
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
 
-        setIsGeneratingQuestions(true)
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault()
 
-        try {
-            // Simulate AI API call
-            await new Promise((resolve) => setTimeout(resolve, 2000))
+    if (!validateForm()) return
 
-            const techStacksText = formData.techStacks.length > 0 ? ` focusing on ${formData.techStacks.join(", ")}` : ""
+    setIsSubmitting(true)
+    setSubmitStatus("submitting")
 
-            const generatedQuestions = `1. Can you walk me through your experience with ${formData.jobRole} roles?
+    try {
+      // Get current user
+      const user: any = await getCurrentUser()
+      
+      if (!user) {
+        throw new Error("User not authenticated")
+      }
+      
+      if (user?.credits < 1) {
+        throw new Error("Insufficient credits")
+      }
 
-2. What interests you most about this ${formData.jobRole} position?${techStacksText
-                    ? `
+      // Convert questions from text to array
+      const questionsArray = formData.sampleQuestions
+        .split("\n")
+        .map(q => q.trim())
+        .filter(q => q.length > 0);
 
-3. How would you approach a project involving ${formData.techStacks[0] || "the main technology stack"}?`
-                    : ""
-                }
+      // Submit form data to the API
+      const response = await fetch("/api/interview/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: formData.jobRole,
+          level: formData.level,
+          type: formData.type,
+          techstack: formData.techStacks,
+          questions: questionsArray,
+          userId: user.id
+        }),
+      })
 
-4. Describe a challenging situation you've faced in your previous work and how you handled it.
+      const data = await response.json()
 
-5. What are your strengths and how do they relate to this ${formData.jobRole} role?${formData.type === "technical"
-                    ? `
+      if (!data.success) {
+        throw new Error(data.error || "Failed to create interview")
+      }
 
-6. Can you explain the difference between ${formData.techStacks[0] || "relevant technologies"} and ${formData.techStacks[1] || "alternative approaches"}?
-
-7. How do you stay updated with the latest trends in ${formData.type} development?`
-                    : ""
-                }
-
-8. Where do you see yourself in the next 3-5 years?
-
-9. Do you have any questions about the role or our company?`
-
-            setFormData((prev) => ({ ...prev, sampleQuestions: generatedQuestions }))
-        } catch (error) {
-            console.error("Error generating questions:", error)
-        } finally {
-            setIsGeneratingQuestions(false)
-        }
-    }
-
-    const validateForm = () => {
-        const newErrors: FormErrors = {}
-
-        if (!formData.jobRole.trim()) newErrors.jobRole = "Job role is required"
-        if (!formData.type) newErrors.type = "Interview type is required"
-        if (!formData.level) newErrors.level = "Difficulty level is required"
-        if (!formData.sampleQuestions.trim()) newErrors.sampleQuestions = "Sample questions are required"
-
-        setErrors(newErrors)
-        return Object.keys(newErrors).length === 0
-    }
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault()
-
-        if (!validateForm()) return
-
-        setIsSubmitting(true)
+      setSubmitStatus("success")
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        setFormData({
+          jobRole: "",
+          type: "",
+          level: "",
+          techStacks: [],
+          sampleQuestions: "",
+        })
         setSubmitStatus("idle")
-
-        try {
-            // Simulate API call
-            await new Promise((resolve) => setTimeout(resolve, 1500))
-
-            console.log("Submitting interview data:", formData)
-            setSubmitStatus("success")
-
-            // Reset form after successful submission
-            setTimeout(() => {
-                setFormData({
-                    jobRole: "",
-                    type: "",
-                    level: "",
-                    techStacks: [],
-                    sampleQuestions: "",
-                })
-                setSubmitStatus("idle")
-            }, 3000)
-        } catch (error) {
-            console.error("Error submitting interview:", error)
-            setSubmitStatus("error")
-        } finally {
-            setIsSubmitting(false)
-        }
+      }, 2000)
+    } catch (error) {
+      console.error("Error creating interview:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
     }
+  }
 
-    const value = {
+  return (
+    <InterviewFormContext.Provider
+      value={{
         formData,
         errors,
         isGeneratingQuestions,
@@ -180,19 +226,17 @@ export const InterviewFormProvider = ({ children }: { children: ReactNode }) => 
         validateForm,
         handleSubmit,
         setErrors
-    }
-
-    return (
-        <InterviewFormContext.Provider value={value}>
-            {children}
-        </InterviewFormContext.Provider>
-    )
+      }}
+    >
+      {children}
+    </InterviewFormContext.Provider>
+  )
 }
 
-export const useInterviewForm = () => {
-    const context = useContext(InterviewFormContext)
-    if (context === undefined) {
-        throw new Error("useInterviewForm must be used within an InterviewFormProvider")
-    }
-    return context
+export function useInterviewForm() {
+  const context = useContext(InterviewFormContext)
+  if (context === undefined) {
+    throw new Error("useInterviewForm must be used within an InterviewFormProvider")
+  }
+  return context
 }

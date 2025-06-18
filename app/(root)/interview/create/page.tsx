@@ -33,7 +33,10 @@ export default function CreateInterviewPage() {
                     </CardHeader>
                     <CardContent>
                         <InterviewFormProvider>
-                            <form onSubmit={(e) => e.preventDefault()} className="space-y-6">
+                            <form onSubmit={(e) => {
+                                const { handleSubmit } = require('@/context/InterviewFormContext').useInterviewForm();
+                                handleSubmit(e);
+                            }} className="space-y-6">
                                 <JobDetailsForm />
                                 <Separator className="bg-slate-600" />
                                 <TechStacksForm />

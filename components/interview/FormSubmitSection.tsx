@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { useInterviewForm } from "@/context/InterviewFormContext"
 
 export function FormSubmitSection() {
-    const { isSubmitting, submitStatus } = useInterviewForm()
+    const { isSubmitting, submitStatus, handleSubmit } = useInterviewForm()
 
     return (
         <div className="space-y-4">
@@ -13,6 +13,7 @@ export function FormSubmitSection() {
                 <Button
                     type="submit"
                     disabled={isSubmitting}
+                    onClick={(e) => handleSubmit(e)}
                     className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 px-8"
                 >
                     {isSubmitting ? (

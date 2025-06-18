@@ -10,12 +10,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
 import { signUp, signIn } from "@/lib/actions/auth.action"
-import {
-  Form,
-} from "@/components/ui/form"
+import { Form } from "@/components/ui/form"
 import { FormField } from "./FormFields";
 import { useRouter } from "next/navigation";
-
 
 type FormType = "signup" | "sign-in";
 
