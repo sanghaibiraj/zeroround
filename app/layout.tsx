@@ -1,33 +1,22 @@
 import type { Metadata } from "next";
-import { Mona_Sans } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
-import { Toaster } from "sonner";
 
-const monaSans = Mona_Sans({
-  variable: "--font-mona-sans",
-  subsets: ["latin"],
-});
-
-
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "PrepAI",
-  description: "An AI-powered interview preparation tool",
+  title: "ZeroRound - AI-Powered Interview Mastery",
+  description: "Transform interview anxiety into confidence with ZeroRound",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="en" className="dark">
-      <body
-        className={`${monaSans.variable} antialiased pattern`}
-      >
-        {children}
-        <Toaster/>
-      </body>
+    <html lang="en">
+      <body className={inter.className}>{children}</body>
     </html>
   );
 }
