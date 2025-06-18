@@ -18,12 +18,16 @@ const RootLayout = async ({ children }: { children: React.ReactNode }) => {
             <Link href="/" className="cursor-pointer">
               <Logo />
             </Link>
-          </div>  
-          {/* <div className="flex gap-4">
+          </div>
+
+          <div className="flex gap-4">
+            <Link href="/dashboard" className="text-slate-300 hover:text-white transition-colors">
+              Dashboard
+            </Link>
             <Link href="/profile" className="text-slate-300 hover:text-white transition-colors">
               Profile
             </Link>
-          </div> */}
+          </div>
         </div>
       </nav>
 
