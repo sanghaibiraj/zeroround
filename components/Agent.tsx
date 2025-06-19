@@ -184,6 +184,10 @@ export const Agent = ({ userName, userId, interviewId, questions }: AgentProps) 
                     </button>
                 )}
             </div>
+
+            <div className="flex flex-col gap-4 mt-8">
+                <p className="text-lg font-semibold text-white">After the interview has ended, please wait on the page for a few seconds for the feedback to be generated. </p>
+            </div>
         </>
     );
 };
