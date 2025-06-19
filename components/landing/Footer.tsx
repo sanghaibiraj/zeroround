@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button"
-import { Twitter, Linkedin, Github } from "lucide-react"
 import Logo from "../shared/Logo"
 
 export default function Footer() {
@@ -20,17 +18,6 @@ export default function Footer() {
             <p className="text-slate-400 mb-4">
               Empowering students to ace interviews with AI-powered preparation and confidence building.
             </p>
-            <div className="flex space-x-4">
-              <Button size="icon" variant="ghost" className="text-slate-400 hover:text-white">
-                <Twitter className="h-5 w-5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="text-slate-400 hover:text-white">
-                <Linkedin className="h-5 w-5" />
-              </Button>
-              <Button size="icon" variant="ghost" className="text-slate-400 hover:text-white">
-                <Github className="h-5 w-5" />
-              </Button>
-            </div>
           </div>
 
           <div>
@@ -74,7 +61,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-          <p>&copy; 2024 ZeroRound. All rights reserved.</p>
+          <p>&copy; 2025 ZeroRound. All rights reserved.</p>
         </div>
       </div>
     </footer>

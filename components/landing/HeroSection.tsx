@@ -1,6 +1,7 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Play } from "lucide-react"
+import Link from "next/link"
 
 export default function HeroSection() {
   return (
@@ -22,20 +23,22 @@ export default function HeroSection() {
             choose from thousands of pre-built scenarios. Build the skills you need to land your dream job.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
-              className="text-lg px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
-            >
-              Get Started Free
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+            <Link href="/signup">
+              <Button
+                size="lg"
+                className="text-lg px-8 py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700"
+              >
+                Get Started Free
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
             <Button
               size="lg"
               variant="outline"
               className="text-lg px-8 py-3 border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white"
             >
               <Play className="mr-2 h-5 w-5" />
-              Watch Demo
+              Watch Demo (Coming Soon)
             </Button>
           </div>
           <p className="text-sm text-slate-400 mt-4">

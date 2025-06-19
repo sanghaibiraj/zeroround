@@ -27,7 +27,7 @@ export default function PricingSection() {
         "Industry-specific questions",
         "Performance analytics"
       ],
-      buttonText: "Start Free Trial",
+      buttonText: "Will be released soon",
       highlighted: true
     },
     {
@@ -41,7 +41,7 @@ export default function PricingSection() {
         "Custom branding",
         "Priority support"
       ],
-      buttonText: "Contact Sales",
+      buttonText: "Coming Soon",
       highlighted: false
     }
   ]

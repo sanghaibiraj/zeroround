@@ -2,7 +2,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Mail, Phone, MapPin, Twitter, Linkedin, Github } from "lucide-react"
+import { Mail, Phone, MapPin} from "lucide-react"
 
 export default function ContactSection() {
   return (
@@ -19,42 +19,15 @@ export default function ContactSection() {
             <div className="space-y-4">
               <div className="flex items-center">
                 <Mail className="h-6 w-6 text-blue-400 mr-3" />
-                <span className="text-slate-300">support@zeroround.com</span>
+                <span className="text-slate-300">sanghaibiraj@gmail.com</span>
               </div>
               <div className="flex items-center">
                 <Phone className="h-6 w-6 text-blue-400 mr-3" />
-                <span className="text-slate-300">+1 (555) 123-4567</span>
+                <span className="text-slate-300">+91 XXXXX XXXXX</span>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-6 w-6 text-blue-400 mr-3" />
-                <span className="text-slate-300">San Francisco, CA</span>
-              </div>
-            </div>
-
-            <div className="mt-8">
-              <h4 className="text-lg font-semibold mb-4">Follow Us</h4>
-              <div className="flex space-x-4">
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white"
-                >
-                  <Twitter className="h-5 w-5" />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white"
-                >
-                  <Linkedin className="h-5 w-5" />
-                </Button>
-                <Button
-                  size="icon"
-                  variant="outline"
-                  className="border-slate-600 text-slate-300 hover:bg-slate-800 hover:text-white"
-                >
-                  <Github className="h-5 w-5" />
-                </Button>
+                <span className="text-slate-300">IIIT Bhagalpur, Bihar, India</span>
               </div>
             </div>
           </div>
