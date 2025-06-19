@@ -13,6 +13,7 @@ import { signUp, signIn } from "@/lib/actions/auth.action"
 import { Form } from "@/components/ui/form"
 import { FormField } from "./FormFields";
 import { useRouter } from "next/navigation";
+import Logo from "./shared/Logo"
 
 type FormType = "signup" | "sign-in";
 
@@ -79,35 +80,38 @@ const AuthForm = ({ type }: { type: FormType }) => {
     }
 
   }
+  
   const isSignIn = type === "sign-in"
   return (
-    <div className="card-border lg:min-w-[560px]">
-      <div className="flex flex-col gap-6 card py-14 px-10 items-center">
-        <div className="flex flex-row gap-2 justify-center items-center">
-          <Image src="./logo.svg" alt="logo" height={32} width={38} />
-          <h2 className="text-primary-100">PrepAI</h2>
+    <div className="flex items-center justify-center min-h-screen min-w-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white p-6">
+      <div className="w-full max-w-lg bg-slate-800/50 p-8 rounded-xl shadow-lg backdrop-blur-sm border border-slate-700">
+        <div className="flex flex-col gap-6 items-center">
+          <div className="flex flex-row gap-2 justify-center items-center">
+            {/* <Image src="./logo.svg" alt="logo" height={32} width={38} />
+            <h2 className="text-2xl font-bold text-white">PrepAI</h2> */}
+            <Logo />
+          </div>
+          <h3 className="text-xl text-slate-300">Practice job interview with AI</h3>
+
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form flex flex-col items-center">
+              {!isSignIn && (
+                <FormField control={form.control} name="name" label="Name" placeholder="Your name"></FormField>
+              )}
+              <FormField control={form.control} name="email" label="Email" placeholder="Your email address" type="email"></FormField>
+              <FormField control={form.control} name="password" label="Password" placeholder="Enter your password" type="password"></FormField>
+              <Button type="submit" className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md transition-all w-full">
+                {isSignIn ? 'Sign in' : 'Create an Account'}
+              </Button>
+            </form>
+          </Form>
+          <p className="text-center text-slate-300">
+            {isSignIn ? 'No account yet?' : 'Have an account already?'}
+            <Link href={isSignIn ? '/signup' : '/signin'} className="font-bold text-blue-400 ml-1 hover:text-blue-300 transition-colors">
+              {isSignIn ? 'Sign up' : 'Sign in'}
+            </Link>
+          </p>
         </div>
-        <h3>Practice job interview with AI</h3>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form flex flex-col items-center">
-            {!isSignIn && (
-              <FormField control={form.control} name="name" label="Name" placeholder="Your name"></FormField>
-            )}
-            <FormField control={form.control} name="email" label="Email" placeholder="Your email address" type="email"></FormField>
-            <FormField control={form.control} name="password" label="Password" placeholder="Enter your password" type="password"></FormField>
-            <Button type="submit">
-              {isSignIn ? 'Sign in' : 'Create an Account'}
-            </Button>
-
-          </form>
-        </Form>
-        <p className="text-center">
-          {isSignIn ? 'No account yet?' : 'Have an account already?'}
-          <Link href={isSignIn ? '/signup' : '/signin'} className="font-bold text-user-primary ml-1">
-            {isSignIn ? 'Sign up' : 'Sign in'}
-          </Link>
-        </p>
       </div>
     </div>
   )

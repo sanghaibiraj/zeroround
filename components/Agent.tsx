@@ -23,7 +23,7 @@ interface SavedMessage {
 }
 
 // Main Component: Agent
-export const Agent = ({ userName, userId, type, interviewId, questions }: AgentProps) => {
+export const Agent = ({ userName, userId, interviewId, questions }: AgentProps) => {
     const router = useRouter();
 
     // State: Tracks if AI is speaking
@@ -110,50 +110,32 @@ export const Agent = ({ userName, userId, type, interviewId, questions }: AgentP
     // useEffect: React to callStatus changes
     useEffect(function () {
         if (callStatus === CallStatus.FINISHED) {
-            if (type === "generate") {
-                // If type is "generate", redirect to home                    
-                router.push('/');
-            } else {
-                // If type is "interview", generate feedback first
-                handleGenerateFeedback(messages);
-            }
+            // Generate feedback when call is finished
+            handleGenerateFeedback(messages);
         }
-    }, [messages, callStatus, type, userId]); // Depend on state changes
+    }, [messages, callStatus, userId]); // Depend on state changes
 
     // Handler: Starts the call
     const handleCall = async function () {
         setCallStatus(CallStatus.CONNECTING);
 
-        if (type === "generate") {
-            // Start "generate" workflow
-            await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID!, {
-                variableValues: {
-                    username: userName,
-                    userid: userId,
-                }
-            });
-        } else {
-            // Start "interview" workflow
-            let formattedQuestions = '';
-            if (questions) {
-                formattedQuestions = questions.map((question) => `- ${question}`).join('\n');
-            }
-            await vapi.start(interviewer, {
-                variableValues: {
-                    questions: formattedQuestions
-                }
-            });
+        // Start "interview" workflow
+        let formattedQuestions = '';
+        if (questions) {
+            formattedQuestions = questions.map((question) => `- ${question}`).join('\n');
         }
+        await vapi.start(interviewer, {
+            variableValues: {
+                questions: formattedQuestions
+            }
+        });
     };
 
     // Handler: Disconnects the call manually
     const handleDisconnect = async function () {
         setCallStatus(CallStatus.FINISHED);
-        await vapi.stop();
+        vapi.stop();
     };
-
-    // Helper: Get the latest message (for display)
-    const lastMessage = messages[messages.length - 1]?.content;
 
     // Helper: Check if call is inactive or finished
     const isCallInactiveOrFinished = callStatus === CallStatus.INACTIVE || callStatus === CallStatus.FINISHED;
@@ -182,28 +164,11 @@ export const Agent = ({ userName, userId, type, interviewId, questions }: AgentP
                 </div>
             </div>
 
-            {/* Middle Section: Transcript (Last message) */}
-            {messages.length > 0 && (
-                <div className="transcript-border">
-                    <div className="transcript">
-                        <p
-                            key={lastMessage} // Helps with animation transition
-                            className={cn(
-                                'transition-opacity duration-500 opacity-0',
-                                'animate-fadeIn opacity-100'
-                            )}
-                        >
-                            {lastMessage}
-                        </p>
-                    </div>
-                </div>
-            )}
-
             {/* Bottom Section: Control Buttons */}
             <div className="w-full flex justify-center">
                 {/* Show Call button if not active */}
                 {callStatus !== 'ACTIVE' ? (
-                    <button className="relative btn-call" onClick={handleCall}>
+                    <button className="relative btn-call mt-12" onClick={handleCall}>
                         <span className={cn(
                             "absolute animate-ping rounded-full opacity-75",
                             callStatus !== 'CONNECTING' && 'hidden'
@@ -214,7 +179,7 @@ export const Agent = ({ userName, userId, type, interviewId, questions }: AgentP
                     </button>
                 ) : (
                     // Show End button if active
-                    <button className='btn-disconnect' onClick={handleDisconnect}>
+                    <button className='btn-disconnect mt-12' onClick={handleDisconnect}>
                         End
                     </button>
                 )}
