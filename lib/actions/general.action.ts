@@ -49,6 +49,11 @@ export async function createFeedback(params: CreateFeedbackParams) {
         "You are a professional interviewer analyzing a mock interview. Your task is to evaluate the candidate based on structured categories. Be critical and harsh in your analysis. If there are mistakes or areas for improvement, point them out. Do not give high scores unless the candidate truly deserves it.",
     });
 
+    // Get current date in IST (UTC+5:30)
+    const now = new Date();
+    const istOffset = 5.5 * 60 * 60 * 1000; // 5 hours and 30 minutes in milliseconds
+    const istDate = new Date(now.getTime() + istOffset);
+    
     const feedback = {
       interviewId: interviewId,
       userId: userId,
@@ -57,7 +62,7 @@ export async function createFeedback(params: CreateFeedbackParams) {
       strengths: object.strengths,
       areasForImprovement: object.areasForImprovement,
       finalAssessment: object.finalAssessment,
-      createdAt: new Date().toISOString(),
+      createdAt: istDate.toISOString(),
     };
 
     let feedbackRef;
@@ -89,4 +94,4 @@ export async function getFeedbackByInterviewId(params: GetFeedbackByInterviewIdP
   return {
     id: feedbackDoc.id, ...feedbackDoc.data()
   } as Feedback;
-}            
+}
