@@ -1,7 +1,13 @@
 "use client";
 
-import { Player } from "@lottiefiles/react-lottie-player";
+import dynamic from "next/dynamic";
 import React from "react";
+
+// Dynamically import the Player component with SSR disabled
+const Player = dynamic(
+  () => import("@lottiefiles/react-lottie-player").then((mod) => mod.Player),
+  { ssr: false }
+);
 
 const Loading = () => {
   return (
