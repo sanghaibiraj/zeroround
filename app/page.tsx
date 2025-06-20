@@ -13,7 +13,6 @@ import { isAuthenticated } from "@/lib/actions/auth.action"
 
 export default function LandingPage() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
-	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
 		const checkAuth = async () => {
@@ -22,8 +21,6 @@ export default function LandingPage() {
 				setIsLoggedIn(authStatus)
 			} catch (error) {
 				console.error("Authentication check failed:", error)
-			} finally {
-				setLoading(false)
 			}
 		}
 
@@ -33,17 +30,13 @@ export default function LandingPage() {
 	return (
 		<div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 text-white">
 			<Navbar isLoggedIn={isLoggedIn} />
-			{!loading && (
-				<>
-					<HeroSection />
-					<WhyNeededSection />
-					<FeaturesSection />
-					<PricingSection />
-					<TestimonialsSection />
-					<ContactSection />
-					<Footer />
-				</>
-			)}
+			<HeroSection />
+			<WhyNeededSection />
+			<FeaturesSection />
+			<PricingSection />
+			<TestimonialsSection />
+			<ContactSection />
+			<Footer />
 		</div>
 	)
 }
