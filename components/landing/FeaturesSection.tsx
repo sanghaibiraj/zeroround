@@ -1,13 +1,12 @@
 import { FeatureCard } from "../shared/FeatureCard"
 import { CheckListItem } from "../shared/CheckListItem"
 import { 
-  Brain, 
-  BookOpen, 
-  TrendingUp, 
+  Brain,
   MessageSquare, 
   Clock, 
   PlusCircle, 
-  CheckCircle 
+  CheckCircle,
+  FileText 
 } from "lucide-react"
 
 export default function FeaturesSection() {
@@ -19,33 +18,33 @@ export default function FeaturesSection() {
       color: "blue"
     },
     {
-      icon: <BookOpen className="h-12 w-12 text-purple-400 mb-4" />,
-      title: "Pre-Built Interview Library",
-      description: "Access thousands of professionally crafted interviews for every industry - tech, finance, healthcare, marketing, and more. From entry-level to executive positions.",
+      icon: <Brain className="h-12 w-12 text-purple-400 mb-4" />,
+      title: "Interview Taken by AI",
+      description: "Experience realistic interviews conducted by our advanced AI. The system adapts to your responses and provides natural conversation flow just like a human interviewer would.",
       color: "purple"
     },
     {
-      icon: <Brain className="h-12 w-12 text-green-400 mb-4" />,
-      title: "AI-Powered Analysis",
-      description: "Get detailed feedback on your responses, body language, speaking pace, and confidence level. Our AI identifies areas for improvement and provides actionable suggestions.",
+      icon: <CheckCircle className="h-12 w-12 text-green-400 mb-4" />,
+      title: "AI-Powered Feedback Generation",
+      description: "Receive detailed feedback on your responses and interview performance. Our AI analyzes your answers to provide actionable suggestions for improvement. Note: video is not monitored.",
       color: "green"
     },
     {
       icon: <MessageSquare className="h-12 w-12 text-yellow-400 mb-4" />,
-      title: "Conversational Skills Training",
+      title: "Train Your Conversational Skills",
       description: "Practice natural conversation flow, learn to handle difficult questions, and develop the ability to think clearly under pressure with our interactive AI interviewer.",
       color: "yellow"
     },
     {
-      icon: <TrendingUp className="h-12 w-12 text-red-400 mb-4" />,
-      title: "Progress Tracking",
-      description: "Monitor your improvement over time with detailed analytics. See confidence scores, response quality metrics, and track your journey from nervous to confident.",
+      icon: <FileText className="h-12 w-12 text-red-400 mb-4" />,
+      title: "Interview Based on Your Resume",
+      description: "Upload your resume and get personalized interview questions specific to your experience, skills, and career path. Prepare for questions you're most likely to face.",
       color: "red"
     },
     {
       icon: <Clock className="h-12 w-12 text-indigo-400 mb-4" />,
-      title: "24/7 Practice Availability",
-      description: "Practice whenever you want, wherever you are. No scheduling, no waiting - your AI interviewer is always ready to help you improve.",
+      title: "24/7 Availability",
+      description: "Practice whenever you want, wherever you are. No scheduling, no waiting - your AI interviewer is always ready to help you improve your interview skills.",
       color: "indigo"
     }
   ]

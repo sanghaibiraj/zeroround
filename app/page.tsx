@@ -10,9 +10,13 @@ import TestimonialsSection from "@/components/landing/TestimonialsSection"
 import ContactSection from "@/components/landing/ContactSection"
 import Footer from "@/components/landing/Footer"
 import { isAuthenticated } from "@/lib/actions/auth.action"
+import { useSmoothScroll } from "@/hooks/useSmoothScroll"
 
 export default function LandingPage() {
 	const [isLoggedIn, setIsLoggedIn] = useState(false)
+	
+	// Add smooth scrolling
+	useSmoothScroll();
 
 	useEffect(() => {
 		const checkAuth = async () => {

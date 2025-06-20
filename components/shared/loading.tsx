@@ -1,5 +1,4 @@
 "use client";
-// This component is rendered on the client-side in Next.js
 
 import { Player } from "@lottiefiles/react-lottie-player";
 import React from "react";
