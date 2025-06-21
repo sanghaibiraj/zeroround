@@ -111,7 +111,7 @@ export function InterviewFormProvider({ children }: { children: ReactNode }) {
       
       const generatedQuestions = 
         `1. Tell me about your experience with ${techStackString}.\n` +
-        `2. How would you solve [problem related to ${formData.jobRole}]?\n` +
+        `2. How would you solve problem related to ${formData.jobRole}?\n` +
         `3. Describe a challenging project you worked on as a ${formData.jobRole}.\n` +
         `4. How do you stay updated with the latest technologies in this field?\n` +
         `5. What's your approach to debugging complex issues?`

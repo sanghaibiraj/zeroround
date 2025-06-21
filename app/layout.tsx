@@ -17,8 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <SplashCursor />
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>
+        <SplashCursor />
+        {children}
+      </body>
     </html>
   );
 }
